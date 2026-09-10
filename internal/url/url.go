@@ -40,12 +40,8 @@ func doParseQuery(query string, separator byte, urlUnescape bool) (map[string][]
 			var keyErr, valueErr error
 			key, keyErr = queryUnescape(key)
 			value, valueErr = queryUnescape(value)
-			if err == nil {
-				if keyErr != nil {
-					err = keyErr
-				} else {
-					err = valueErr
-				}
+			if keyErr != nil || valueErr != nil {
+				err = ErrInvalidURLEncoding
 			}
 		}
 		m[key] = append(m[key], value)
